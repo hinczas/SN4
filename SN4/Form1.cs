@@ -27,6 +27,8 @@ namespace SN4
         private int sleep = 100;
         private int maxx = 282;
         private int maxy = 260;
+        private int minx = 1;
+        private int miny = 25;
 
         public Form1()
         {
@@ -42,16 +44,16 @@ namespace SN4
         private void Start()
         {
             direction = 'S';
-            int px = rand.Next(0, maxx);
+            int px = rand.Next(minx, maxx);
             px = px - (px % size);
-            int py = rand.Next(0, maxy);
+            int py = rand.Next(miny, maxy);
             py = py - (py % size);
 
             Point head = new Point(px, py);
 
-            int ax = rand.Next(0, maxx);
+            int ax = rand.Next(minx, maxx);
             ax = ax - (ax % size);
-            int ay = rand.Next(0, maxy);
+            int ay = rand.Next(miny, maxy);
             ay = ay - (ay % size);
             apple = new Point(ax, ay);
 
@@ -104,7 +106,7 @@ namespace SN4
                     tmp.X += size;
                     break;
             }
-            if ((tmp.Y < 0 || tmp.Y > maxy-size) || (tmp.X < 0 || tmp.X > maxx-size))
+            if ((tmp.Y < miny || tmp.Y > maxy-size) || (tmp.X < minx || tmp.X > maxx-size))
             {
                 Start();
             }
@@ -149,9 +151,9 @@ namespace SN4
 
                 segments.Add(tmp);
 
-                int ax = rand.Next(0, maxx);
+                int ax = rand.Next(minx, maxx);
                 ax = ax - (ax % size);
-                int ay = rand.Next(0, maxy);
+                int ay = rand.Next(miny, maxy);
                 ay = ay - (ay % size);
                 apple = new Point(ax, ay);
             }
@@ -187,8 +189,16 @@ namespace SN4
                     //    gg.DrawLine(new Pen(Color.Gray), 0, i*4 + 2 , 255, i * 4 + 2);
                     //    gg.DrawLine(new Pen(Color.Gray), i * 4 + 2, 0, i * 4 + 2, 255);
                     //}
-                    //gg.DrawLine(new Pen(Color.Black), maxx, 0, maxx, maxy);
-                    //gg.DrawLine(new Pen(Color.Black), 0, maxy, maxx, maxy);
+                    string score = "Score : " + segments.Count;
+                    Font drawFont = new Font("Arial", 8);
+                    SolidBrush drawBrush = new SolidBrush(Color.Black);
+                    PointF drawPoint = new Point(5, 5);
+                    e.Graphics.DrawString(score, drawFont, drawBrush, drawPoint);
+
+                    gg.DrawLine(new Pen(Color.Black), minx, miny, minx, maxy);
+                    gg.DrawLine(new Pen(Color.Black), minx, miny, maxx, miny);
+                    gg.DrawLine(new Pen(Color.Black), maxx, miny, maxx, maxy);
+                    gg.DrawLine(new Pen(Color.Black), minx, maxy, maxx, maxy);
                     gg.FillEllipse(aBrush1, new RectangleF(apple, new Size(4, 4)));
                     gg.DrawEllipse(new Pen(Color.LightGray), new RectangleF(apple, new Size(4, 4)));
 
