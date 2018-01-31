@@ -30,12 +30,21 @@ namespace SN4
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.FormBorderStyle = FormBorderStyle.FixedSingle;
-            this.PreviewKeyDown += new PreviewKeyDownEventHandler(this.previewKeyDown);
-            this.KeyDown += new KeyEventHandler(this.keyDown);
+            this.SuspendLayout();
+            // 
+            // Form1
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(284, 264);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Name = "Form1";
             this.Text = "SN4";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keyDown);
+            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.mouseClick);
+            this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.previewKeyDown);
+            this.ResumeLayout(false);
+
         }
 
         #endregion

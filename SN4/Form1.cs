@@ -22,14 +22,18 @@ namespace SN4
         private char direction;
         private List<Point> segments;
         private Random rand;
-        private int size= 4;
-        private int counter = 0;
-        private int sleep = 100;
-        private int maxx = 282;
-        private int maxy = 260;
-        private int minx = 1;
-        private int miny = 25;
-        private int level = 0;
+        private int size = ConstNumbers.SegmentSize;
+        private int counter = ConstNumbers.Counter;
+        private int sleep = ConstNumbers.SleepInit;
+        private int maxx = ConstNumbers.MaxBorderX;
+        private int maxpx = ConstNumbers.MaxPointX;
+        private int maxy = ConstNumbers.MaxBorderY;
+        private int maxpy = ConstNumbers.MaxPointY;
+        private int minx = ConstNumbers.MinimumBorderX;
+        private int minpx = ConstNumbers.MinimumPointX;
+        private int miny = ConstNumbers.MinimumBorderY;
+        private int minpy = ConstNumbers.MinimumPointY;
+        private int clbr = ConstNumbers.CalibrateConst;
 
         public Form1()
         {
@@ -45,22 +49,34 @@ namespace SN4
         private void Start()
         {
             direction = 'S';
-            int px = rand.Next(minx, maxx - size);
+            int px = rand.Next(minpx, maxpx);
             px = px - (px % size);
-            int py = rand.Next(miny, maxy - size);
+            int py = rand.Next(minpy, maxpy);
             py = py - (py % size);
 
             Point head = new Point(px, py);
-
-            int ax = rand.Next(minx, maxx - size);
-            ax = ax - (ax % size);
-            int ay = rand.Next(miny+size, maxy - size);
-            ay = ay - (ay % size);
+            
+            int ax = rand.Next(minpx, maxpx);
+            ax = ax - (ax % clbr);
+            int ay = rand.Next(minpy, maxpy);
+            ay = ay - (ay % clbr);
             apple = new Point(ax, ay);
 
             segments = new List<Point>();
             segments.Add(head);
             sleep = 100;
+        }
+
+        private void mouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                int ax = rand.Next(minpx, maxpx);
+                ax = ax - (ax % clbr);
+                int ay = rand.Next(minpy, maxpy);
+                ay = ay - (ay % clbr);
+                apple = new Point(ax, ay);
+            }
         }
 
         void keyDown(object sender, KeyEventArgs e)
@@ -90,6 +106,22 @@ namespace SN4
             }));
         }
 
+        // PreviewKeyDown is where you preview the key.
+        // Do not put any logic here, instead use the
+        // KeyDown event after setting IsInputKey to true.
+        private void previewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Down:
+                case Keys.Up:
+                case Keys.Left:
+                case Keys.Right:
+                    e.IsInputKey = true;
+                    break;
+            }
+        }
+
         void MoveSegments(char dir)
         {
             Point tmp = segments.Last();
@@ -108,30 +140,14 @@ namespace SN4
                     tmp.X += size;
                     break;
             }
-            if ((tmp.Y < miny || tmp.Y > maxy-size*2) || (tmp.X < minx || tmp.X > maxx-size))
+            if ((tmp.Y < minpy || tmp.Y > maxpy) || (tmp.X < minpx || tmp.X > maxpx))
             {
                 Start();
             }
-            else
+            if (direction != 'S' && direction != 'P')
             {
                 segments.Remove(segments.First());
                 segments.Add(tmp);
-            }
-        }
-        
-        // PreviewKeyDown is where you preview the key.
-        // Do not put any logic here, instead use the
-        // KeyDown event after setting IsInputKey to true.
-        private void previewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.Down:
-                case Keys.Up:
-                case Keys.Left:
-                case Keys.Right:
-                    e.IsInputKey = true;
-                    break;
             }
         }
 
@@ -153,12 +169,10 @@ namespace SN4
 
                 segments.Add(tmp);
 
-                int ax = rand.Next(minx, maxx-size);
-                //int ax = apple.X + 4;
-                ax = ax - (ax % size);
-                int ay = rand.Next(miny+size, maxy-size);
-                ay = ay - (ay % size);
-                //int ay = apple.Y;
+                int ax = rand.Next(minpx, maxpx);
+                ax = ax - (ax % clbr);
+                int ay = rand.Next(minpy, maxpy);
+                ay = ay - (ay % clbr);
                 apple = new Point(ax, ay);
 
                 sleep = sleep == 20 ? 20 : sleep - 1;
@@ -190,9 +204,9 @@ namespace SN4
                     gg.SmoothingMode = smoothingMode;
                     gg.TextRenderingHint = textSmoothing;
 
-                    //for (int i =0; i < 63; i++)
+                    //for (int i = 0; i < 63; i++)
                     //{
-                    //    gg.DrawLine(new Pen(Color.Gray), 0, i*4 + 2 , 255, i * 4 + 2);
+                    //    gg.DrawLine(new Pen(Color.Gray), 0, i * 4 + 2, 255, i * 4 + 2);
                     //    gg.DrawLine(new Pen(Color.Gray), i * 4 + 2, 0, i * 4 + 2, 255);
                     //}
                     string score = "Score : " + segments.Count;
@@ -211,15 +225,16 @@ namespace SN4
                     gg.DrawLine(new Pen(Color.Black), maxx, miny, maxx, maxy);                          // Vertical right black
                     gg.DrawLine(new Pen(Color.Gray), minx-1, maxy+1, maxx+1, maxy+1);                   // Horizontal bottom gray
                     gg.DrawLine(new Pen(Color.Black), minx, maxy, maxx, maxy);                          // Horizontal bottom black
-                    gg.FillEllipse(aBrush1, new RectangleF(apple, new Size(4, 4)));
-                    gg.DrawEllipse(new Pen(Color.Black), new RectangleF(apple, new Size(4, 4)));
+
+                    gg.FillEllipse(aBrush1, new RectangleF(new Point(apple.X-2, apple.Y-2), new Size(5, 5)));
+                    gg.DrawEllipse(new Pen(Color.Black), new RectangleF(new Point(apple.X - 2, apple.Y - 2), new Size(5, 5)));
 
                     for (int i = 0; i < segments.Count; i++)
                     {
                         Point segment = segments[i];
                         aBrush = i == segments.Count - 1 ? aBrush2 : aBrush3;
-                        gg.FillEllipse(aBrush, new RectangleF(segment, new Size(5, 5)));
-                        gg.DrawEllipse(new Pen(Color.Black), new RectangleF(segment, new Size(5, 5)));
+                        gg.FillEllipse(aBrush, new RectangleF(new Point(segment.X - 2, segment.Y - 2), new Size(5, 5)));
+                        gg.DrawEllipse(new Pen(Color.Black), new RectangleF(new Point(segment.X - 2, segment.Y - 2), new Size(5, 5)));
                     }
 
                     OnApple();
@@ -251,5 +266,20 @@ namespace SN4
                 Debug.WriteLine(z.Message);
             }
         }
+    }
+    public struct ConstNumbers
+    {
+        public const int SegmentSize       = 4;
+        public const int Counter           = 0;
+        public const int SleepInit         = 100;
+        public const int MaxBorderX        = 282;
+        public const int MaxPointX         = 279;
+        public const int MaxBorderY        = 262;
+        public const int MaxPointY         = 259;
+        public const int MinimumBorderX    = 1;
+        public const int MinimumPointX     = 3;
+        public const int MinimumBorderY    = 25;
+        public const int MinimumPointY     = 27;
+        public const int CalibrateConst    = 3;
     }
 }
