@@ -64,7 +64,6 @@ namespace SN4
 
             segments = new List<Point>();
             segments.Add(head);
-            sleep = 100;
         }
 
         private void mouseClick(object sender, MouseEventArgs e)
@@ -201,11 +200,11 @@ namespace SN4
                     gg.TextRenderingHint = textSmoothing;
 
                     //For debugging: shows grid
-                    for (int i = 0; i < 63; i++)
-                    {
-                        gg.DrawLine(new Pen(Color.Gray), minx, miny + (i * 4 + 2), maxx, miny + (i * 4 + 2));
-                        gg.DrawLine(new Pen(Color.Gray), minx + (i * 4 + 2), miny, minx + (i * 4 + 2), maxy);
-                    }
+                    //for (int i = 0; i < 63; i++)
+                    //{
+                    //    gg.DrawLine(new Pen(Color.Gray), minx, miny + (i * 4 + 2), maxx, miny + (i * 4 + 2));
+                    //    gg.DrawLine(new Pen(Color.Gray), minx + (i * 4 + 2), miny, minx + (i * 4 + 2), maxy);
+                    //}
                     string score = "Score : " + segments.Count;
                     Font drawFont = new Font("Arial", 8);
                     SolidBrush drawBrush = new SolidBrush(Color.Black);
