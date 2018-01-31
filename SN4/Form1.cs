@@ -50,16 +50,16 @@ namespace SN4
         {
             direction = 'S';
             int px = rand.Next(minpx, maxpx);
-            px = px - (px % size);
+            //px = px - (px % size);
             int py = rand.Next(minpy, maxpy);
-            py = py - (py % size);
+            //py = py - (py % size);
 
             Point head = new Point(px, py);
             
             int ax = rand.Next(minpx, maxpx);
-            ax = ax - (ax % clbr);
+            //ax = ax - (ax % size);
             int ay = rand.Next(minpy, maxpy);
-            ay = ay - (ay % clbr);
+            //ay = ay - (ay % size);
             apple = new Point(ax, ay);
 
             segments = new List<Point>();
@@ -72,9 +72,9 @@ namespace SN4
             if (e.Button == MouseButtons.Left)
             {
                 int ax = rand.Next(minpx, maxpx);
-                ax = ax - (ax % clbr);
+                //ax = ax - (ax % size);
                 int ay = rand.Next(minpy, maxpy);
-                ay = ay - (ay % clbr);
+                //ay = ay - (ay % size);
                 apple = new Point(ax, ay);
             }
         }
@@ -157,6 +157,8 @@ namespace SN4
 
             if (Math.Abs(head.X - apple.X) < size && Math.Abs(head.Y - apple.Y) < size)
             {
+                Debug.WriteLine("Apple: " +apple.X+ " " + apple.Y);
+                Debug.WriteLine("Head : " + head.X + " " + head.Y);
                 Point tmp = segments.Last();
                 if (direction == 'R')
                     tmp.X += size;
@@ -170,9 +172,9 @@ namespace SN4
                 segments.Add(tmp);
 
                 int ax = rand.Next(minpx, maxpx);
-                ax = ax - (ax % clbr);
+                //ax = ax - (ax % size);
                 int ay = rand.Next(minpy, maxpy);
-                ay = ay - (ay % clbr);
+                //ay = ay - (ay % size);
                 apple = new Point(ax, ay);
 
                 sleep = sleep == 20 ? 20 : sleep - 1;
