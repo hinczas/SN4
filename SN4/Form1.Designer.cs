@@ -31,10 +31,11 @@ namespace SN4
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.PreviewKeyDown += new PreviewKeyDownEventHandler(this.previewKeyDown);
             this.KeyDown += new KeyEventHandler(this.keyDown);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Text = "Form1";
+            this.Text = "SN4";
         }
 
         #endregion

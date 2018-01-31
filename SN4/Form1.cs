@@ -25,6 +25,8 @@ namespace SN4
         private int size= 4;
         private int counter = 0;
         private int sleep = 100;
+        private int maxx = 282;
+        private int maxy = 260;
 
         public Form1()
         {
@@ -40,16 +42,16 @@ namespace SN4
         private void Start()
         {
             direction = 'S';
-            int px = rand.Next(0, 250);
+            int px = rand.Next(0, maxx);
             px = px - (px % size);
-            int py = rand.Next(0, 250);
+            int py = rand.Next(0, maxy);
             py = py - (py % size);
 
             Point head = new Point(px, py);
 
-            int ax = rand.Next(0, 250);
+            int ax = rand.Next(0, maxx);
             ax = ax - (ax % size);
-            int ay = rand.Next(0, 250);
+            int ay = rand.Next(0, maxy);
             ay = ay - (ay % size);
             apple = new Point(ax, ay);
 
@@ -102,7 +104,7 @@ namespace SN4
                     tmp.X += size;
                     break;
             }
-            if ((tmp.Y < 0 || tmp.Y > 250) || (tmp.X < 0 || tmp.X > 250))
+            if ((tmp.Y < 0 || tmp.Y > maxy-size) || (tmp.X < 0 || tmp.X > maxx-size))
             {
                 Start();
             }
@@ -147,9 +149,9 @@ namespace SN4
 
                 segments.Add(tmp);
 
-                int ax = rand.Next(0, 250);
+                int ax = rand.Next(0, maxx);
                 ax = ax - (ax % size);
-                int ay = rand.Next(0, 250);
+                int ay = rand.Next(0, maxy);
                 ay = ay - (ay % size);
                 apple = new Point(ax, ay);
             }
@@ -185,8 +187,8 @@ namespace SN4
                     //    gg.DrawLine(new Pen(Color.Gray), 0, i*4 + 2 , 255, i * 4 + 2);
                     //    gg.DrawLine(new Pen(Color.Gray), i * 4 + 2, 0, i * 4 + 2, 255);
                     //}
-                    gg.DrawLine(new Pen(Color.Black), 255, 0, 255, 255);
-                    gg.DrawLine(new Pen(Color.Black), 0, 255, 255, 255);
+                    //gg.DrawLine(new Pen(Color.Black), maxx, 0, maxx, maxy);
+                    //gg.DrawLine(new Pen(Color.Black), 0, maxy, maxx, maxy);
                     gg.FillEllipse(aBrush1, new RectangleF(apple, new Size(4, 4)));
                     gg.DrawEllipse(new Pen(Color.LightGray), new RectangleF(apple, new Size(4, 4)));
 
