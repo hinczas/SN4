@@ -3,8 +3,9 @@
 *.user
 _ReSharper.*/
 *.sdf
+bin/
 obj/
-Debug/*
+Debug/
 Release/
 *.opensdf
 *.tlog
