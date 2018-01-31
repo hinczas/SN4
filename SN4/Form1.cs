@@ -77,7 +77,7 @@ namespace SN4
                         direction = 'R';
                         break;
                     case Keys.Space:
-                        direction = 'S';
+                        direction = 'P';
                         break;
                 }
                 MoveSegments(direction);
