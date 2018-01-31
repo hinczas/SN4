@@ -50,16 +50,16 @@ namespace SN4
         {
             direction = 'S';
             int px = rand.Next(minpx, maxpx);
-            //px = px - (px % size);
+            px = px - ((px-clbr) % size);
             int py = rand.Next(minpy, maxpy);
-            //py = py - (py % size);
+            py = py - ((py - clbr) % size);
 
             Point head = new Point(px, py);
             
             int ax = rand.Next(minpx, maxpx);
-            //ax = ax - (ax % size);
+            ax = ax - ((ax - clbr) % size);
             int ay = rand.Next(minpy, maxpy);
-            //ay = ay - (ay % size);
+            ay = ay - ((ay-clbr) % size);
             apple = new Point(ax, ay);
 
             segments = new List<Point>();
@@ -72,9 +72,9 @@ namespace SN4
             if (e.Button == MouseButtons.Left)
             {
                 int ax = rand.Next(minpx, maxpx);
-                //ax = ax - (ax % size);
+                ax = ax - ((ax - clbr) % size);
                 int ay = rand.Next(minpy, maxpy);
-                //ay = ay - (ay % size);
+                ay = ay - ((ay - clbr) % size);
                 apple = new Point(ax, ay);
             }
         }
@@ -168,13 +168,12 @@ namespace SN4
                     tmp.Y += size;
                 if (direction == 'U')
                     tmp.Y -= size;
-
                 segments.Add(tmp);
 
                 int ax = rand.Next(minpx, maxpx);
-                //ax = ax - (ax % size);
+                ax = ax - ((ax - clbr) % size);
                 int ay = rand.Next(minpy, maxpy);
-                //ay = ay - (ay % size);
+                ay = ay - ((ay - clbr) % size);
                 apple = new Point(ax, ay);
 
                 sleep = sleep == 20 ? 20 : sleep - 1;
@@ -201,27 +200,27 @@ namespace SN4
                     gg.SmoothingMode = smoothingMode;
                     gg.TextRenderingHint = textSmoothing;
 
-                    // For debugging: shows grid
-                    //for (int i = 0; i < 63; i++)
-                    //{
-                    //    gg.DrawLine(new Pen(Color.Gray), minx, miny + (i * 4 + 2), maxx, miny + (i * 4 + 2));
-                    //    gg.DrawLine(new Pen(Color.Gray), minx + (i * 4 + 2), miny, minx + (i * 4 + 2), maxy);
-                    //}
+                    //For debugging: shows grid
+                    for (int i = 0; i < 63; i++)
+                    {
+                        gg.DrawLine(new Pen(Color.Gray), minx, miny + (i * 4 + 2), maxx, miny + (i * 4 + 2));
+                        gg.DrawLine(new Pen(Color.Gray), minx + (i * 4 + 2), miny, minx + (i * 4 + 2), maxy);
+                    }
                     string score = "Score : " + segments.Count;
                     Font drawFont = new Font("Arial", 8);
                     SolidBrush drawBrush = new SolidBrush(Color.Black);
                     PointF drawPoint = new Point(5, 5);
                     gg.DrawString(score, drawFont, drawBrush, drawPoint);
 
-                    gg.DrawLine(new Pen(Color.Gray), minx-1, miny-1, minx-1, maxy+1);                   // Vertical left gray
-                    gg.DrawLine(new Pen(Color.Black), minx, miny, minx, maxy);                          // Vertical left black
-                    gg.DrawLine(new Pen(Color.Gray), minx-1, miny-1, maxx+1, miny-1);                   // Horizontal top gray
+                    //gg.DrawLine(new Pen(Color.Gray), minx-1, miny-1, minx-1, maxy+1);                   // Vertical left gray
+                    //gg.DrawLine(new Pen(Color.Black), minx, miny, minx, maxy);                          // Vertical left black
                     gg.DrawLine(new Pen(Color.LightGray), minx - 1, miny - 2, maxx + 1, miny - 2);      // Horizontal top light gray
+                    gg.DrawLine(new Pen(Color.Gray), minx-1, miny-1, maxx+1, miny-1);                   // Horizontal top gray
                     gg.DrawLine(new Pen(Color.Black), minx, miny, maxx, miny);                          // Horizontal top black
-                    gg.DrawLine(new Pen(Color.Gray), maxx + 1, miny - 1, maxx + 1, maxy + 1);           // Vertical right gray
-                    gg.DrawLine(new Pen(Color.Black), maxx, miny, maxx, maxy);                          // Vertical right black
-                    gg.DrawLine(new Pen(Color.Gray), minx-1, maxy+1, maxx+1, maxy+1);                   // Horizontal bottom gray
-                    gg.DrawLine(new Pen(Color.Black), minx, maxy, maxx, maxy);                          // Horizontal bottom black
+                    //gg.DrawLine(new Pen(Color.Gray), maxx + 1, miny - 1, maxx + 1, maxy + 1);           // Vertical right gray
+                    //gg.DrawLine(new Pen(Color.Black), maxx, miny, maxx, maxy);                          // Vertical right black
+                    //gg.DrawLine(new Pen(Color.Gray), minx-1, maxy+1, maxx+1, maxy+1);                   // Horizontal bottom gray
+                    //gg.DrawLine(new Pen(Color.Black), minx, maxy, maxx, maxy);                          // Horizontal bottom black
 
                     gg.FillEllipse(aBrush1, new RectangleF(new Point(apple.X-2, apple.Y-2), new Size(5, 5)));
                     gg.DrawEllipse(new Pen(Color.Black), new RectangleF(new Point(apple.X - 2, apple.Y - 2), new Size(5, 5)));
@@ -266,7 +265,7 @@ namespace SN4
     }
     public struct ConstNumbers
     {
-        public const int SegmentSize       = 4;
+        public const int SegmentSize       = 5;
         public const int Counter           = 0;
         public const int SleepInit         = 100;
         public const int MaxBorderX        = 282;
