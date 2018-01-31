@@ -189,11 +189,6 @@ namespace SN4
             Brush aBrush1 = (Brush)Brushes.Red;
             Brush aBrush2 = (Brush)Brushes.Green;
             Brush aBrush3 = (Brush)Brushes.LightGreen;
-            //Brush aBrush = (Brush)Brushes.LightGray;
-            //Brush aBrush1 = (Brush)Brushes.LightGray;
-            //Brush aBrush2 = (Brush)Brushes.LightGray;
-            //Brush aBrush3 = (Brush)Brushes.LightGray;
-            Pen pen = (Pen)Pens.Red;
             //start an async task
             try
             {
@@ -204,17 +199,17 @@ namespace SN4
                     gg.SmoothingMode = smoothingMode;
                     gg.TextRenderingHint = textSmoothing;
 
+                    // For debugging: shows grid
                     //for (int i = 0; i < 63; i++)
                     //{
-                    //    gg.DrawLine(new Pen(Color.Gray), 0, i * 4 + 2, 255, i * 4 + 2);
-                    //    gg.DrawLine(new Pen(Color.Gray), i * 4 + 2, 0, i * 4 + 2, 255);
+                    //    gg.DrawLine(new Pen(Color.Gray), minx, miny + (i * 4 + 2), maxx, miny + (i * 4 + 2));
+                    //    gg.DrawLine(new Pen(Color.Gray), minx + (i * 4 + 2), miny, minx + (i * 4 + 2), maxy);
                     //}
                     string score = "Score : " + segments.Count;
                     Font drawFont = new Font("Arial", 8);
                     SolidBrush drawBrush = new SolidBrush(Color.Black);
                     PointF drawPoint = new Point(5, 5);
                     gg.DrawString(score, drawFont, drawBrush, drawPoint);
-                    //gg.DrawString("sleep "+sleep+" level "+level, drawFont, drawBrush, drawPoint);
 
                     gg.DrawLine(new Pen(Color.Gray), minx-1, miny-1, minx-1, maxy+1);                   // Vertical left gray
                     gg.DrawLine(new Pen(Color.Black), minx, miny, minx, maxy);                          // Vertical left black
