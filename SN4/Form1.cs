@@ -22,12 +22,15 @@ namespace SN4
         private int direction;
         private List<Point> segments;
         private Random rand;
+        private Color bckOriginal;
+        private bool gameon;
+        private int gameoncounter;
         private int size = ConstNumbers.SegmentSize;
         private int counter = ConstNumbers.Counter;
         private int sleep = ConstNumbers.SleepInit;
         private int maxx = ConstNumbers.MaxBorderX;
         private int maxpx = ConstNumbers.MaxPointX;
-        private int maxy = ConstNumbers.MaxBorderY;
+        //private int maxy = ConstNumbers.MaxBorderY;
         private int maxpy = ConstNumbers.MaxPointY;
         private int minx = ConstNumbers.MinimumBorderX;
         private int minpx = ConstNumbers.MinimumPointX;
@@ -44,6 +47,7 @@ namespace SN4
             smoothingMode = SmoothingMode.HighQuality;
             textSmoothing = TextRenderingHint.AntiAlias;
             InitializeComponent();
+            bckOriginal = this.BackColor;
         }
 
         private void Start()
@@ -64,6 +68,8 @@ namespace SN4
 
             segments = new List<Point>();
             segments.Add(head);
+            gameon = true;
+            gameoncounter = ConstNumbers.GameCounter ;
         }
 
         private void mouseClick(object sender, MouseEventArgs e)
@@ -141,7 +147,7 @@ namespace SN4
             }
             if ((tmp.Y < minpy || tmp.Y > maxpy) || (tmp.X < minpx || tmp.X > maxpx))
             {
-                Start();
+                gameon = false;
             }
             if (direction != ConstNumbers.STOP)
             {
@@ -149,6 +155,7 @@ namespace SN4
                 segments.Add(tmp);
             }
         }
+        
 
         void OnApple()
         {
@@ -213,9 +220,9 @@ namespace SN4
 
                     //gg.DrawLine(new Pen(Color.Gray), minx-1, miny-1, minx-1, maxy+1);                   // Vertical left gray
                     //gg.DrawLine(new Pen(Color.Black), minx, miny, minx, maxy);                          // Vertical left black
-                    gg.DrawLine(new Pen(Color.LightGray), minx - 1, miny - 2, maxx + 1, miny - 2);      // Horizontal top light gray
-                    gg.DrawLine(new Pen(Color.Gray), minx-1, miny-1, maxx+1, miny-1);                   // Horizontal top gray
-                    gg.DrawLine(new Pen(Color.Black), minx, miny, maxx, miny);                          // Horizontal top black
+                    gg.DrawLine(new Pen(Color.LightGray), minx - 1, miny - 2, maxx + 1, miny - 2);        // Horizontal top light gray
+                    gg.DrawLine(new Pen(Color.Gray), minx-1, miny-1, maxx+1, miny-1);                     // Horizontal top gray
+                    gg.DrawLine(new Pen(Color.Black), minx, miny, maxx, miny);                            // Horizontal top black
                     //gg.DrawLine(new Pen(Color.Gray), maxx + 1, miny - 1, maxx + 1, maxy + 1);           // Vertical right gray
                     //gg.DrawLine(new Pen(Color.Black), maxx, miny, maxx, maxy);                          // Vertical right black
                     //gg.DrawLine(new Pen(Color.Gray), minx-1, maxy+1, maxx+1, maxy+1);                   // Horizontal bottom gray
@@ -223,6 +230,7 @@ namespace SN4
 
                     gg.FillEllipse(aBrush1, new RectangleF(new Point(apple.X-2, apple.Y-2), new Size(5, 5)));
                     gg.DrawEllipse(new Pen(Color.Black), new RectangleF(new Point(apple.X - 2, apple.Y - 2), new Size(5, 5)));
+                    gg.DrawEllipse(new Pen(Color.Gray), new RectangleF(new Point(apple.X - 3, apple.Y - 3), new Size(7, 7)));
 
                     for (int i = 0; i < segments.Count; i++)
                     {
@@ -234,11 +242,23 @@ namespace SN4
 
                     OnApple();
 
-                    if (counter >= sleep)
+                    if (counter >= sleep && gameon)
                     {
                         MoveSegments(direction);
                         counter = 0;
-                    }                   
+                    }              
+                    if (!gameon)
+                    {
+                        this.BackColor = Color.LightPink;
+                        gameoncounter--;
+                    }     
+                    if (gameoncounter<=0)
+                    {
+                        this.BackColor = bckOriginal;
+                        gameon = true;
+                        gameoncounter = ConstNumbers.GameCounter;
+                        Start();
+                    }
                 }
                 //invoke an action against the main thread to draw the buffer to the background image of the main form.
                 if (!this.IsDisposed)
@@ -276,6 +296,7 @@ namespace SN4
         public const int MinimumBorderY    = 25;
         public const int MinimumPointY     = 27;
         public const int CalibrateConst    = 3;
+        public const int GameCounter       = 300;
         public const int LEFT              = 0;
         public const int UP                = 1;
         public const int RIGHT             = 2;
