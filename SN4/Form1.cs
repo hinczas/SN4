@@ -25,6 +25,7 @@ namespace SN4
         private Color bckOriginal;
         private bool gameon;
         private int gameoncounter;
+        private int bestScore;
         private int size = ConstNumbers.SegmentSize;
         private int counter = ConstNumbers.Counter;
         private int sleep = ConstNumbers.SleepInit;
@@ -41,6 +42,7 @@ namespace SN4
         public Form1()
         {
             rand = new Random();
+            bestScore = 0;
 
             Start();
 
@@ -147,6 +149,7 @@ namespace SN4
             }
             if ((tmp.Y < minpy || tmp.Y > maxpy) || (tmp.X < minpx || tmp.X > maxpx))
             {
+                bestScore = bestScore < segments.Count ? segments.Count : bestScore;
                 gameon = false;
             }
             if (direction != ConstNumbers.STOP)
@@ -213,10 +216,13 @@ namespace SN4
                     //    gg.DrawLine(new Pen(Color.Gray), minx + (i * 4 + 2), miny, minx + (i * 4 + 2), maxy);
                     //}
                     string score = "Score : " + segments.Count;
+                    string best = "Best : " + bestScore;
                     Font drawFont = new Font("Arial", 8);
                     SolidBrush drawBrush = new SolidBrush(Color.Black);
-                    PointF drawPoint = new Point(5, 5);
-                    gg.DrawString(score, drawFont, drawBrush, drawPoint);
+                    PointF drawPointScore = new Point(5, 5);
+                    PointF drawPointBest = new Point(100, 5);
+                    gg.DrawString(score, drawFont, drawBrush, drawPointScore);
+                    gg.DrawString(best, drawFont, drawBrush, drawPointBest);
 
                     //gg.DrawLine(new Pen(Color.Gray), minx-1, miny-1, minx-1, maxy+1);                   // Vertical left gray
                     //gg.DrawLine(new Pen(Color.Black), minx, miny, minx, maxy);                          // Vertical left black
@@ -230,7 +236,6 @@ namespace SN4
 
                     gg.FillEllipse(aBrush1, new RectangleF(new Point(apple.X-2, apple.Y-2), new Size(5, 5)));
                     gg.DrawEllipse(new Pen(Color.Black), new RectangleF(new Point(apple.X - 2, apple.Y - 2), new Size(5, 5)));
-                    gg.DrawEllipse(new Pen(Color.Gray), new RectangleF(new Point(apple.X - 3, apple.Y - 3), new Size(7, 7)));
 
                     for (int i = 0; i < segments.Count; i++)
                     {
