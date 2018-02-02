@@ -19,7 +19,7 @@ namespace SN4
         private SmoothingMode smoothingMode;
         private TextRenderingHint textSmoothing;
         private Point apple;
-        private char direction;
+        private int direction;
         private List<Point> segments;
         private Random rand;
         private int size = ConstNumbers.SegmentSize;
@@ -48,7 +48,7 @@ namespace SN4
 
         private void Start()
         {
-            direction = 'S';
+            direction = ConstNumbers.STOP;
             int px = rand.Next(minpx, maxpx);
             px = px - ((px-clbr) % size);
             int py = rand.Next(minpy, maxpy);
@@ -86,19 +86,19 @@ namespace SN4
                 switch (e.KeyCode)
                 {
                     case Keys.Down:
-                        direction = 'D';
+                        direction = ConstNumbers.DOWN;
                         break;
                     case Keys.Up:
-                        direction = 'U';
+                        direction = ConstNumbers.UP;
                         break;
                     case Keys.Left:
-                        direction = 'L';
+                        direction = ConstNumbers.LEFT;
                         break;
                     case Keys.Right:
-                        direction = 'R';
+                        direction = ConstNumbers.RIGHT;
                         break;
                     case Keys.Space:
-                        direction = 'P';
+                        direction = ConstNumbers.STOP;
                         break;
                 }
                 MoveSegments(direction);
@@ -121,21 +121,21 @@ namespace SN4
             }
         }
 
-        void MoveSegments(char dir)
+        void MoveSegments(int dir)
         {
             Point tmp = segments.Last();
             switch (dir)
             {
-                case 'D':
+                case ConstNumbers.DOWN:
                     tmp.Y += size;
                     break;
-                case 'U':
+                case ConstNumbers.UP:
                     tmp.Y -= size;
                     break;
-                case 'L':
+                case ConstNumbers.LEFT:
                     tmp.X -= size;
                     break;
-                case 'R':
+                case ConstNumbers.RIGHT:
                     tmp.X += size;
                     break;
             }
@@ -143,7 +143,7 @@ namespace SN4
             {
                 Start();
             }
-            if (direction != 'S' && direction != 'P')
+            if (direction != ConstNumbers.STOP)
             {
                 segments.Remove(segments.First());
                 segments.Add(tmp);
@@ -156,16 +156,16 @@ namespace SN4
 
             if (Math.Abs(head.X - apple.X) < size && Math.Abs(head.Y - apple.Y) < size)
             {
-                Debug.WriteLine("Apple: " +apple.X+ " " + apple.Y);
-                Debug.WriteLine("Head : " + head.X + " " + head.Y);
+                //Debug.WriteLine("Apple: " +apple.X+ " " + apple.Y);
+                //Debug.WriteLine("Head : " + head.X + " " + head.Y);
                 Point tmp = segments.Last();
-                if (direction == 'R')
+                if (direction == ConstNumbers.RIGHT)
                     tmp.X += size;
-                if (direction == 'L')
+                if (direction == ConstNumbers.LEFT)
                     tmp.X -= size;
-                if (direction == 'D')
+                if (direction == ConstNumbers.DOWN)
                     tmp.Y += size;
-                if (direction == 'U')
+                if (direction == ConstNumbers.UP)
                     tmp.Y -= size;
                 segments.Add(tmp);
 
@@ -276,5 +276,10 @@ namespace SN4
         public const int MinimumBorderY    = 25;
         public const int MinimumPointY     = 27;
         public const int CalibrateConst    = 3;
+        public const int LEFT              = 0;
+        public const int UP                = 1;
+        public const int RIGHT             = 2;
+        public const int DOWN              = 3;
+        public const int STOP              = 4;
     }
 }
